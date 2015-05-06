@@ -12,13 +12,26 @@ for line in input_file:
 				arg_number = len(arg_list)
 				final_arg_list = list()
 				for item in arg_list:
-					arg_name = item.split()[-1]
-					type_list = item.split()
-					del type_list[-1]
-					arg_type = ' '.join(type_list)
+					if len(item.split()) == 0:
+						arg_name = ""
+						arg_type = "VOID"
+					elif len(item.split()) == 1:
+						arg_name = ""
+						arg_type = item.split()[0]
+					elif (len(item.split()) == 2) and (item.split()[0] == "unsigned") and (item.split()[1] in ["int","long","char"]):
+							arg_name = ""
+							type_list = item.split()
+							arg_type = ' '.join(type_list)
+					else:
+						arg_name = item.split()[-1]
+						type_list = item.split()
+						del type_list[-1]
+						arg_type = ' '.join(type_list)
+
 					if "*" in arg_name: 
 						final_arg_list.append(("PT", arg_type))
 					else:
+						#print(arg_name)
 						final_arg_list.append(("ST", arg_type))
 					if not (arg_type.upper() in all_types):
 						all_types.append(arg_type.upper())
